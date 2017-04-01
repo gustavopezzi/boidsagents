@@ -22,6 +22,7 @@ var canvasContext;
 
 var options = {
 	insertOption: 'addBoids',
+	showFish: false,
 	viewDebug: false,
 	viewBackground: true,
 	enableObstacles: true,
@@ -45,9 +46,10 @@ function preload() {
 ///////////////////////////////////////////////////////////////////////////////
 function setup() {
 	colorMode(RGB, 100);
-	createCanvas(800, 600);
+	var canvas = createCanvas(800, 600);
+	canvas.parent('canvas-container');
 	var canvasElement = document.getElementById('defaultCanvas0');
-    canvasContext = canvas.getContext('2d');
+    canvasContext = canvasElement.getContext('2d');
 	for (var i = 0; i < NUM_BOIDS_START; i++) {
         boids.push(new Boid(random(CANVAS_WIDTH), random(CANVAS_HEIGHT)));
     }
@@ -147,25 +149,30 @@ function draw() {
 		var bgImg = new Image();
 		bgImg.src = 'img/bg.jpg';
 		bgImg.onload = function () {
+			options.showFish = true;
 			for (var w = 0; w < CANVAS_WIDTH; w += bgImg.width) {
 				for (var h = 0; h < CANVAS_HEIGHT; h  += bgImg.height) {
 					canvasContext.drawImage(bgImg, w, h);
 				}
 			}
 		}
+		$('.glass-container').show();
 	}
 	else {
-		background(15);
+		background('#8279BA');
+		$('.glass-container').hide();
 	}
 
-	for (var i = 0; i < boids.length; i++) {
-        var boid = boids[i];
-        boid.update();
-        boid.draw();
-    }
+	if (options.showFish) {
+		for (var i = 0; i < boids.length; i++) {
+	        var boid = boids[i];
+	        boid.update();
+	        boid.draw();
+	    }
 
-    for (var i = 0; i < obstacles.length; i++) {
-        var obstacle = obstacles[i];
-        obstacle.draw();
-    }
+	    for (var i = 0; i < obstacles.length; i++) {
+	        var obstacle = obstacles[i];
+	        obstacle.draw();
+	    }
+	}
 }
