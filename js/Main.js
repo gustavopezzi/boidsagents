@@ -49,10 +49,10 @@ function setup() {
 	var canvas = createCanvas(800, 600);
 	canvas.parent('canvas-container');
 	var canvasElement = document.getElementById('defaultCanvas0');
-    canvasContext = canvasElement.getContext('2d');
+	canvasContext = canvasElement.getContext('2d');
 	for (var i = 0; i < NUM_BOIDS_START; i++) {
-        boids.push(new Boid(random(CANVAS_WIDTH), random(CANVAS_HEIGHT)));
-    }
+		boids.push(new Boid(random(CANVAS_WIDTH), random(CANVAS_HEIGHT)));
+	}
 	recalculateControlVariables();
 }
 
@@ -61,10 +61,10 @@ function setup() {
 ///////////////////////////////////////////////////////////////////////////////
 function recalculateControlVariables() {
 	MAX_SPEED = 2.0;
-    NEIGHBOR_RADIUS = 60;
-    CROWD_RADIUS = (NEIGHBOR_RADIUS / 1.3);
-    SEPARATION_RADIUS = 90;
-    COHESION_RADIUS = NEIGHBOR_RADIUS;
+	NEIGHBOR_RADIUS = 60;
+	CROWD_RADIUS = (NEIGHBOR_RADIUS / 1.3);
+	SEPARATION_RADIUS = 90;
+	COHESION_RADIUS = NEIGHBOR_RADIUS;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -72,14 +72,14 @@ function recalculateControlVariables() {
 ///////////////////////////////////////////////////////////////////////////////
 function setupObstacleWalls() {
 	obstacles = [];
-    for (var x = 20; x < CANVAS_WIDTH - 20; x += 10) {
-        obstacles.push(new Obstacle(x, 10));
-        obstacles.push(new Obstacle(x, CANVAS_HEIGHT - 10));
-    }
-    for (var y = 20; y < CANVAS_HEIGHT - 10; y += 10) {
-        obstacles.push(new Obstacle(10, y));
-        obstacles.push(new Obstacle(CANVAS_WIDTH - 20, y));
-    }
+	for (var x = 20; x < CANVAS_WIDTH - 20; x += 10) {
+		obstacles.push(new Obstacle(x, 10));
+		obstacles.push(new Obstacle(x, CANVAS_HEIGHT - 10));
+	}
+	for (var y = 20; y < CANVAS_HEIGHT - 10; y += 10) {
+		obstacles.push(new Obstacle(10, y));
+		obstacles.push(new Obstacle(CANVAS_WIDTH - 20, y));
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -131,14 +131,14 @@ $(document).ready(function () {
 // Event listener for mouse pressed.
 ///////////////////////////////////////////////////////////////////////////////
 function mousePressed() {
-    switch (options.insertOption) {
-        case 'addBoids':
-            boids.push(new Boid(mouseX, mouseY));
-            break;
-        case 'addBubbles':
-            obstacles.push(new Obstacle(mouseX, mouseY));
-            break;
-    }
+	switch (options.insertOption) {
+		case 'addBoids':
+			boids.push(new Boid(mouseX, mouseY));
+			break;
+		case 'addBubbles':
+			obstacles.push(new Obstacle(mouseX, mouseY));
+			break;
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -157,22 +157,20 @@ function draw() {
 			}
 		}
 		$('.glass-container').show();
-	}
-	else {
+	} else {
 		background('#8279BA');
 		$('.glass-container').hide();
 	}
 
 	if (options.showFish) {
 		for (var i = 0; i < boids.length; i++) {
-	        var boid = boids[i];
-	        boid.update();
-	        boid.draw();
-	    }
-
-	    for (var i = 0; i < obstacles.length; i++) {
-	        var obstacle = obstacles[i];
-	        obstacle.draw();
-	    }
+			var boid = boids[i];
+			boid.update();
+			boid.draw();
+		}
+		for (var i = 0; i < obstacles.length; i++) {
+			var obstacle = obstacles[i];
+			obstacle.draw();
+		}
 	}
 }

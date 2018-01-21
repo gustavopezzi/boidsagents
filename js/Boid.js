@@ -66,12 +66,12 @@ Boid.prototype.getNeighbors = function () {
 Boid.prototype.getAverageAlignment = function () {
 	var sum = createVector(0, 0);
 	var count = 0;
-    var thisBoid = this;
+	var thisBoid = this;
 	this.neighbors.forEach(function (other) {
-        var d = p5.Vector.dist(thisBoid.pos, other.pos);
-        if ((d > 0) && (d < NEIGHBOR_RADIUS)) {
-            var copy = other.move.copy();
-            copy.normalize();
+		var d = p5.Vector.dist(thisBoid.pos, other.pos);
+		if ((d > 0) && (d < NEIGHBOR_RADIUS)) {
+			var copy = other.move.copy();
+			copy.normalize();
 			copy.div(d);
 			sum.add(copy);
 			count++;
@@ -84,20 +84,20 @@ Boid.prototype.getAverageAlignment = function () {
 // Compute the separation force between the boid and its visible neighbors.
 ///////////////////////////////////////////////////////////////////////////////
 Boid.prototype.getSeparation = function () {
-    var steer = createVector(0, 0);
-    var count = 0;
-    var thisBoid = this;
-    this.neighbors.forEach(function (other) {
-        var d = p5.Vector.dist(thisBoid.pos, other.pos);
-        if ((d > 0) && (d < CROWD_RADIUS)) {
-            var diff = p5.Vector.sub(thisBoid.pos, other.pos);
-            diff.normalize();
-            diff.div(d);
-            steer.add(diff);
-            count++;
-        }
-    });
-    return steer;
+	var steer = createVector(0, 0);
+	var count = 0;
+	var thisBoid = this;
+	this.neighbors.forEach(function (other) {
+		var d = p5.Vector.dist(thisBoid.pos, other.pos);
+		if ((d > 0) && (d < CROWD_RADIUS)) {
+			var diff = p5.Vector.sub(thisBoid.pos, other.pos);
+			diff.normalize();
+			diff.div(d);
+			steer.add(diff);
+			count++;
+		}
+	});
+	return steer;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -105,19 +105,19 @@ Boid.prototype.getSeparation = function () {
 ///////////////////////////////////////////////////////////////////////////////
 Boid.prototype.getObstacleAvoidanceDirection = function () {
 	var steer = createVector(0, 0);
-    var count = 0;
-    var thisBoid = this;
-    obstacles.forEach(function (other) {
-        var d = p5.Vector.dist(thisBoid.pos, other.pos);
-        if ((d > 0) && (d < SEPARATION_RADIUS)) {
-            var diff = p5.Vector.sub(thisBoid.pos, other.pos);
-            diff.normalize();
-            diff.div(d);
-            steer.add(diff);
-            count++;
-        }
-    });
-    return steer;
+	var count = 0;
+	var thisBoid = this;
+	obstacles.forEach(function (other) {
+		var d = p5.Vector.dist(thisBoid.pos, other.pos);
+		if ((d > 0) && (d < SEPARATION_RADIUS)) {
+			var diff = p5.Vector.sub(thisBoid.pos, other.pos);
+			diff.normalize();
+			diff.div(d);
+			steer.add(diff);
+			count++;
+		}
+	});
+	return steer;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -125,53 +125,51 @@ Boid.prototype.getObstacleAvoidanceDirection = function () {
 ///////////////////////////////////////////////////////////////////////////////
 Boid.prototype.getCohesion = function () {
 	var neighbordist = 50;
-    var sum = createVector(0, 0);
-    var count = 0;
-    var thisBoid = this;
-    this.neighbors.forEach(function (other) {
-        var d = p5.Vector.dist(thisBoid.pos, other.pos);
-        if ((d > 0) && (d < COHESION_RADIUS)) {
-            sum.add(other.pos);
-            count++;
-        }
-    });
-    if (count > 0) {
-        sum.div(count);
-        var desired = p5.Vector.sub(sum, this.pos);
-        return desired.setMag(0.05);
-    }
-	else {
-        return createVector(0, 0);
-    }
+	var sum = createVector(0, 0);
+	var count = 0;
+	var thisBoid = this;
+	this.neighbors.forEach(function (other) {
+		var d = p5.Vector.dist(thisBoid.pos, other.pos);
+		if ((d > 0) && (d < COHESION_RADIUS)) {
+			sum.add(other.pos);
+			count++;
+		}
+	});
+	if (count > 0) {
+		sum.div(count);
+		var desired = p5.Vector.sub(sum, this.pos);
+		return desired.setMag(0.05);
+	} else {
+		return createVector(0, 0);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 // Boid draw method.
 ///////////////////////////////////////////////////////////////////////////////
 Boid.prototype.draw = function () {
-    for (var i = 0; i < this.neighbors.length; i++) {
-        var f = this.neighbors[i];
-        stroke('#963232');
+	for (var i = 0; i < this.neighbors.length; i++) {
+		var f = this.neighbors[i];
+		stroke('#963232');
 		if (options.viewDebug) {
 			line(this.pos.x, this.pos.y, f.pos.x, f.pos.y);
 		}
-    }
-    noStroke();
-    fill(255, 90, 200);
-    push();
-    translate(this.pos.x, this.pos.y);
-    rotate(this.move.heading());
+	}
+	noStroke();
+	fill(255, 90, 200);
+	push();
+	translate(this.pos.x, this.pos.y);
+	rotate(this.move.heading());
 	if (options.viewDebug) {
 		beginShape();
-	    vertex(10, 0);
-	    vertex(-2, 2);
-	    vertex(-2, -2);
-	    endShape(CLOSE);
+		vertex(10, 0);
+		vertex(-2, 2);
+		vertex(-2, -2);
+		endShape(CLOSE);
+	} else {
+		image((this.id % 2 == 0) ? fishImgOrange : fishImgRed, -8, -5);
 	}
-	else {
-    	image((this.id % 2 == 0) ? fishImgOrange : fishImgRed, -8, -5);
-	}
-    pop();
+	pop();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
